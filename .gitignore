@@ -1,0 +1,4 @@
+.DS_Store
+mysql/data
+.env
+nginx/logs/*

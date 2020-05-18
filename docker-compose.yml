@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    links:
+      - "phpfpm"
+    volumes:
+      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+      - ${NGINX_SITES_PATH}/:/etc/nginx/conf.d/
+      - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
+      - ${NGINX_SSL_PATH}:/etc/nginx/ssl
+
+  phpfpm:
+    build: ./phpfpm
+    ports:
+      - "${NGINX_PHP_UPSTREAM_PORT}:9000"
+    volumes:
+      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+    links:
+      - "mysql"
+
+  mysql:
+    build:
+      context: ./mysql
+      args:
+        - MYSQL_VERSION=${MYSQL_VERSION}
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${WORKSPACE_TIMEZONE}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - ${DATA_PATH_HOST}:/var/lib/mysql/
+      - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
