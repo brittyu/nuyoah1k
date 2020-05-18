@@ -1,4 +1,10 @@
 .DS_Store
-mysql/data
+data
 .env
+
 nginx/logs/*
+nginx/sites/
+!nginx/sites/default.conf
+
+html
+!html/index.html
