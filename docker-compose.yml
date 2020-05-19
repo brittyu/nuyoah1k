@@ -13,10 +13,21 @@ services:
       - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
       - ${NGINX_SSL_PATH}:/etc/nginx/ssl
 
+  golang:
+    build: ./golang
+    ports:
+      - "8088:8088"
+    links:
+      - "mysql"
+      - "redis"
+    volumes:
+      - ./golang/go:/go
+    tty: true
+
   phpfpm:
-    build: 
+    build:
       context: ./phpfpm
-      args: 
+      args:
         - CHANGE_SOURCE=${CHANGE_SOURCE}
         - PHP_VERSION=${PHP_VERSION}
         - BASE_IMAGE_TAG_PREFIX=${PHP_FPM_BASE_IMAGE_TAG_PREFIX}
