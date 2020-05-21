@@ -126,3 +126,15 @@ services:
       - ${DATA_PATH_HOST}/redis:/data
     ports:
       - "${REDIS_PORT}:6379"
+
+  elasticsearch:
+    build:
+      context: ./elasticsearch
+      args:
+        - ELASTICSEARCH_VERSION=${ELASTICSEARCH_VERSION}
+    ports:
+      - "${ELASTICSEARCH_PORT}:9200"
+      - "9300:9300"
+    volumes:
+      - ${DATA_PATH_HOST}/elasticsearch:/usr/share/elasticsearch/data
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
