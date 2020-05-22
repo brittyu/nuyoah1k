@@ -121,3 +121,8 @@ DATA_PATH_HOST=./data
 
 REDIS_VERSION=latest
 REDIS_PORT=6379
+
+### ELASTICSEARCH #################################################
+
+ELASTICSEARCH_VERSION=7.7.0
+ELASTICSEARCH_PORT=9200
