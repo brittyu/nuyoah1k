@@ -1,12 +1,16 @@
 version: '3'
 
+networks:
+  backend:
+    driver: ${NETWORKS_DRIVER}
+
 services:
   nginx:
     build: ./nginx
     ports:
       - "80:80"
-    links:
-      - "phpfpm"
+    networks:
+      - backend
     volumes:
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
       - ${NGINX_SITES_PATH}/:/etc/nginx/conf.d/
@@ -17,9 +21,8 @@ services:
     build: ./golang
     ports:
       - "8088:8088"
-    links:
-      - "mysql"
-      - "redis"
+    networks:
+      - backend
     volumes:
       - ./golang/go:/go
     tty: true
@@ -97,9 +100,8 @@ services:
     volumes:
       - ./phpfpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-    links:
-      - "mysql"
-      - "redis"
+    networks:
+      - backend
 
   mysql:
     build:
@@ -117,6 +119,9 @@ services:
     volumes:
       - ${DATA_PATH_HOST}/mysql:/var/lib/mysql/
       - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+    networks:
+      - backend
+
   redis:
     build:
       context: ./redis
@@ -126,3 +131,5 @@ services:
       - ${DATA_PATH_HOST}/redis:/data
     ports:
       - "${REDIS_PORT}:6379"
+    networks:
+      - backend

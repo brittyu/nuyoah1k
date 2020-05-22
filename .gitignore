@@ -9,3 +9,5 @@ nginx/sites/
 
 html
 !html/index.html
+
+golang/go/*

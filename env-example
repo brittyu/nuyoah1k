@@ -8,6 +8,8 @@ INSTALL_BLACKFIRE=false
 
 WORKSPACE_TIMEZONE=UTC
 
+NETWORKS_DRIVER=bridge
+
 ### PHP_FPM ###############################################
 
 PHP_FPM_BASE_IMAGE_TAG_PREFIX=latest
