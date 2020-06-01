@@ -145,3 +145,14 @@ services:
     volumes:
       - ${DATA_PATH_HOST}/elasticsearch:/usr/share/elasticsearch/data
       - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+
+  xunsearch:
+    build:
+      context: ./xunsearch
+      args:
+        - XUNSEARCH_VERSION=${XUNSEARCH_VERSION}
+    ports:
+      - "${XUNSEARCH_INDEX_PORT}:8383"
+      - "${XUNSEARCH_SEARCH_PORT}:8384"
+    volumes:
+      - ${DATA_PATH_HOST}/xunsearch:/usr/local/xunsearch/data
