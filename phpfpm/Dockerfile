@@ -265,17 +265,8 @@ ARG INSTALL_SWOOLE=false
 
 RUN if [ ${INSTALL_SWOOLE} = true ]; then \
     # Install Php Swoole Extension
-    if [ $(php -r "echo PHP_MAJOR_VERSION;") = "5" ]; then \
-      pecl install swoole-2.0.10; \
-    else \
-      if [ $(php -r "echo PHP_MINOR_VERSION;") = "0" ]; then \
-        pecl install swoole-2.2.0; \
-      else \
-        pecl install swoole; \
-      fi \
-    fi && \
+    pecl install swoole && \
     docker-php-ext-enable swoole \
-    && php -m | grep -q 'swoole' \
 ;fi
 
 ###########################################################################
@@ -953,3 +944,4 @@ WORKDIR /var/www
 CMD ["php-fpm"]
 
 EXPOSE 9000
+EXPOSE 9501

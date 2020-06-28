@@ -27,6 +27,14 @@ services:
       - ./golang/go:/go
     tty: true
 
+  rabbitmq:
+    build: ./rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - backend
+
   phpfpm:
     build:
       context: ./phpfpm
@@ -98,6 +106,7 @@ services:
         - https_proxy
     ports:
       - "${NGINX_PHP_UPSTREAM_PORT}:9000"
+      - "9501:9501"
     volumes:
       - ./phpfpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
