@@ -1,0 +1,8 @@
+MYSQL_VERSION=lastest
+MYSQL_DATABASE=default
+MYSQL_USER=default
+MYSQL_PASSWORD=secret
+MYSQL_PORT=3306
+MYSQL_ROOT_PASSWORD=root
+MYSQL_ENTRYPOINT_INITDB=./mysql/docker-entrypoint-initdb.d
+DATA_PATH_HOST=./data
