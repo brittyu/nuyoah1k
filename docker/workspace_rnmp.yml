@@ -8,7 +8,7 @@ services:
 
   nginx:
     build: ./nginx
-    container_name: workspace_nginx
+    container_name: rnmp_nginx
     ports:
       - "80:80"
     networks:
@@ -18,17 +18,6 @@ services:
       - ${NGINX_SITES_PATH}/:/etc/nginx/conf.d/
       - ${LOG_PATH}/nginx:/var/log/nginx
       - ${NGINX_SSL_PATH}:/etc/nginx/ssl
-
-  golang:
-    build: ./golang
-    container_name: workspace_golang
-    ports:
-      - "8088:8088"
-    networks:
-      - backend
-    volumes:
-      - ./golang/go:/go
-    tty: true
 
   phpfpm:
     build:
@@ -99,7 +88,7 @@ services:
         - LOCALE=${PHP_FPM_DEFAULT_LOCALE}
         - http_proxy
         - https_proxy
-    container_name: workspace_phpfpm
+    container_name: rnmp_phpfpm
     ports:
       - "${NGINX_PHP_UPSTREAM_PORT}:9000"
       - "9501:9501"
@@ -114,7 +103,7 @@ services:
       context: ./mysql
       args:
         - MYSQL_VERSION=${MYSQL_VERSION}
-    container_name: workspace_mysql
+    container_name: rnmp_mysql
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
@@ -134,7 +123,7 @@ services:
       context: ./redis
       args:
         - REDIS_VERSION=${REDIS_VERSION}
-    container_name: workspace_redis
+    container_name: rnmp_redis
     volumes:
       - ${DATA_PATH}/redis:/data
     ports:

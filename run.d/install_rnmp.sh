@@ -10,7 +10,11 @@ service_path="${DOCKER_FILE_DIR}/workspace_${service}.yml"
 cd ${DOCKER_FILE_DIR}
 cp ${ENV_DIR}/${service}.env ${DOCKER_FILE_DIR}/.env
 
-docker-compose -f ${service_path} build
+contrainer_count=`docker ps -a | grep ${service}_ | wc -l`
+if [[ ${contrainer_count} -eq 0 ]]; then
+    docker-compose -f ${service_path} build
+fi
+
 docker-compose -f ${service_path} up -d
 
 rm ${DOCKER_FILE_DIR}/.env
