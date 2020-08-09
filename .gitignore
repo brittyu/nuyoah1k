@@ -1,13 +1,1 @@
 .DS_Store
-data
-.env
-logs
-
-nginx/logs/*
-nginx/sites/
-!nginx/sites/default.conf
-
-html
-!html/index.html
-
-golang/go/*
