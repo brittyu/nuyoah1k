@@ -5,20 +5,23 @@ networks:
     driver: ${NETWORKS_DRIVER}
 
 services:
+
   nginx:
     build: ./nginx
+    container_name: workspace_nginx
     ports:
       - "80:80"
     networks:
       - backend
     volumes:
-      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+      - ${APP_CODE_PATH}:${APP_CODE_PATH_CONTAINER}
       - ${NGINX_SITES_PATH}/:/etc/nginx/conf.d/
-      - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
+      - ${LOG_PATH}/nginx:/var/log/nginx
       - ${NGINX_SSL_PATH}:/etc/nginx/ssl
 
   golang:
     build: ./golang
+    container_name: workspace_golang
     ports:
       - "8088:8088"
     networks:
@@ -26,14 +29,6 @@ services:
     volumes:
       - ./golang/go:/go
     tty: true
-
-  rabbitmq:
-    build: ./rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    networks:
-      - backend
 
   phpfpm:
     build:
@@ -104,12 +99,13 @@ services:
         - LOCALE=${PHP_FPM_DEFAULT_LOCALE}
         - http_proxy
         - https_proxy
+    container_name: workspace_phpfpm
     ports:
       - "${NGINX_PHP_UPSTREAM_PORT}:9000"
       - "9501:9501"
     volumes:
       - ./phpfpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
-      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+      - ${APP_CODE_PATH}:${APP_CODE_PATH_CONTAINER}
     networks:
       - backend
 
@@ -118,6 +114,7 @@ services:
       context: ./mysql
       args:
         - MYSQL_VERSION=${MYSQL_VERSION}
+    container_name: workspace_mysql
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
@@ -127,7 +124,7 @@ services:
     ports:
       - "${MYSQL_PORT}:3306"
     volumes:
-      - ${DATA_PATH_HOST}/mysql:/var/lib/mysql/
+      - ${DATA_PATH}/mysql:/var/lib/mysql/
       - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
     networks:
       - backend
@@ -137,32 +134,10 @@ services:
       context: ./redis
       args:
         - REDIS_VERSION=${REDIS_VERSION}
+    container_name: workspace_redis
     volumes:
-      - ${DATA_PATH_HOST}/redis:/data
+      - ${DATA_PATH}/redis:/data
     ports:
       - "${REDIS_PORT}:6379"
     networks:
       - backend
-
-  elasticsearch:
-    build:
-      context: ./elasticsearch
-      args:
-        - ELASTICSEARCH_VERSION=${ELASTICSEARCH_VERSION}
-    ports:
-      - "${ELASTICSEARCH_PORT}:9200"
-      - "9300:9300"
-    volumes:
-      - ${DATA_PATH_HOST}/elasticsearch:/usr/share/elasticsearch/data
-      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-
-  xunsearch:
-    build:
-      context: ./xunsearch
-      args:
-        - XUNSEARCH_VERSION=${XUNSEARCH_VERSION}
-    ports:
-      - "${XUNSEARCH_INDEX_PORT}:8383"
-      - "${XUNSEARCH_SEARCH_PORT}:8384"
-    volumes:
-      - ${DATA_PATH_HOST}/xunsearch:/usr/local/xunsearch/data

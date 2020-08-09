@@ -35,9 +35,6 @@ begin_service() {
     check_docker_compose
 
     root=`dirname $0`
-    . ${root}/etc/env.sh
-    echo ${PHP_FPM_BASE_IMAGE_TAG_PREFIX}
-    exit 1
     shell_path=${root}/run.d/${1}_${2}.sh
     shift 2
     ${shell_path} $@
