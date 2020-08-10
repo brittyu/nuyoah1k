@@ -2,7 +2,6 @@ version: '3'
 
 networks:
   backend:
-    driver: ${NETWORKS_DRIVER}
 
 services:
 
@@ -93,7 +92,7 @@ services:
       - "${NGINX_PHP_UPSTREAM_PORT}:9000"
       - "9501:9501"
     volumes:
-      - ./phpfpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+      - ./phpfpm/etc/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
       - ${APP_CODE_PATH}:${APP_CODE_PATH_CONTAINER}
     networks:
       - backend

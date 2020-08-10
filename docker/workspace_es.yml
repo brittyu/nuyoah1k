@@ -1,0 +1,21 @@
+version: '3'
+
+networks:
+  backend:
+    external: true
+
+services:
+  es:
+    build:
+      context: ./elasticsearch
+      args:
+        - ELASTICSEARCH_VERSION=${ELASTICSEARCH_VERSION}
+    container_name: es_elasticsearch
+    ports:
+      - "${ELASTICSEARCH_PORT}:9200"
+      - "9300:9300"
+    volumes:
+      - ${DATA_PATH}/elasticsearch:/usr/share/elasticsearch/data
+      - ./elasticsearch/etc/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    networks:
+      - backend

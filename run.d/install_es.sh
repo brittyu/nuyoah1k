@@ -4,7 +4,7 @@ PARENT_DIR=`pwd`
 ENV_DIR="${PARENT_DIR}/env"
 DOCKER_FILE_DIR="${PARENT_DIR}/docker"
 
-service='rnmp'
+service='es'
 service_path="${DOCKER_FILE_DIR}/workspace_${service}.yml"
 
 cd ${DOCKER_FILE_DIR}

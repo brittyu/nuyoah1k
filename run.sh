@@ -31,8 +31,17 @@ check_docker_compose() {
     fi
 }
 
+init_network() {
+    is_exist=`docker network ls | grep backend | wc -l`
+    if [[ $is_exist -eq 0 ]]; then
+        docker network create backend
+    fi
+}
+
 begin_service() {
     check_docker_compose
+
+    init_network
 
     root=`dirname $0`
     shell_path=${root}/run.d/${1}_${2}.sh
