@@ -1,0 +1,20 @@
+version: '3'
+
+networks:
+  backend:
+    external: true
+
+services:
+  es:
+    build:
+      context: ./xunsearch
+      args:
+        - XUNSEARCH_VERSION=${XUNSEARCH_VERSION}
+    container_name: xs_xunsearch
+    ports:
+      - "${XUNSEARCH_INDEX_PORT}:8383"
+      - "${XUNSEARCH_SEARCH_PORT}:8384"
+    volumes:
+      - ${DATA_PATH}/xunsearch:/usr/local/xunsearch/data
+    networks:
+      - backend
