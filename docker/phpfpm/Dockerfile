@@ -1,5 +1,5 @@
 ARG PHP_VERSION
-FROM  php:${PHP_VERSION}-fpm
+FROM  brittyu/php${PHP_VERSION}-fpm:latest
 
 # Set Environment Variables
 ENV DEBIAN_FRONTEND noninteractive
