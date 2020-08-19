@@ -15,6 +15,7 @@ RUN if [ ${CHANGE_SOURCE} = true ]; then \
 ;fi
 
 # always run apt update when start and after add new source list, then clean up at end.
+RUN echo "PHP_VERSION is brittyu ${PHP_VERSION}"
 RUN set -xe; \
     apt-get update -yqq && \
     pecl channel-update pecl.php.net && \
@@ -32,7 +33,7 @@ RUN set -xe; \
       #
       # next lines are here becase there is no auto build on dockerhub see https://github.com/laradock/laradock/pull/1903#issuecomment-463142846
       libzip-dev zip unzip && \
-      if [ ${PHP_VERSION} = "7.3" ] || [ ${PHP_VERSION} = "7.4" ]; then \
+      if [ ${PHP_VERSION} = "7.3" ] || [ ${PHP_VERSION} = "7.4.9" ]; then \
         docker-php-ext-configure zip; \
       else \
         docker-php-ext-configure zip --with-libzip; \
@@ -69,7 +70,7 @@ RUN if [ ${INSTALL_BZ2} = true ]; then \
 ARG INSTALL_GD=false
 RUN if [ ${INSTALL_GD} = true ]; then \
   apt-get -y install --no-install-recommends libfreetype6-dev libjpeg62-turbo-dev libpng-dev; \
-  docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+  docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ && \
   docker-php-ext-install gd \
 ;fi
 
@@ -946,3 +947,4 @@ CMD ["php-fpm"]
 
 EXPOSE 9000
 EXPOSE 9501
+EXPOSE 21001

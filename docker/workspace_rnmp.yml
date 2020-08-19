@@ -2,6 +2,9 @@ version: '3'
 
 networks:
   backend:
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
 
 services:
 
@@ -11,7 +14,8 @@ services:
     ports:
       - "80:80"
     networks:
-      - backend
+      backend:
+        ipv4_address: 172.19.0.6
     volumes:
       - ${APP_CODE_PATH}:${APP_CODE_PATH_CONTAINER}
       - ${NGINX_SITES_PATH}/:/etc/nginx/conf.d/
@@ -94,8 +98,11 @@ services:
     volumes:
       - ./phpfpm/etc/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
       - ${APP_CODE_PATH}:${APP_CODE_PATH_CONTAINER}
+    extra_hosts:
+      - "qingyc.test:172.19.0.6"
     networks:
-      - backend
+      backend:
+        ipv4_address: 172.19.0.3
 
   mysql:
     build:
@@ -115,7 +122,8 @@ services:
       - ${DATA_PATH}/mysql:/var/lib/mysql/
       - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
     networks:
-      - backend
+      backend:
+        ipv4_address: "172.19.0.4"
 
   redis:
     build:
@@ -128,4 +136,5 @@ services:
     ports:
       - "${REDIS_PORT}:6379"
     networks:
-      - backend
+      backend:
+        ipv4_address: "172.19.0.5"
