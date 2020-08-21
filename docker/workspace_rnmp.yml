@@ -11,6 +11,7 @@ services:
   nginx:
     build: ./nginx
     container_name: rnmp_nginx
+    image: rnmp_nginx
     ports:
       - "80:80"
     networks:
@@ -92,6 +93,7 @@ services:
         - http_proxy
         - https_proxy
     container_name: rnmp_phpfpm
+    image: rnmp_phpfpm
     ports:
       - "${NGINX_PHP_UPSTREAM_PORT}:9000"
       - "9501:9501"
@@ -110,6 +112,7 @@ services:
       args:
         - MYSQL_VERSION=${MYSQL_VERSION}
     container_name: rnmp_mysql
+    image: rnmp_mysql
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
@@ -131,6 +134,7 @@ services:
       args:
         - REDIS_VERSION=${REDIS_VERSION}
     container_name: rnmp_redis
+    image: rnmp_redis
     volumes:
       - ${DATA_PATH}/redis:/data
     ports:
