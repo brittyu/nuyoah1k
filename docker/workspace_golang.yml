@@ -1,0 +1,18 @@
+version: '3'
+
+networks:
+  backend:
+    external: true
+
+services:
+  golang:
+    build:
+      context: ./golang
+    container_name: golang_golang
+    ports:
+      - "8080:8080"
+    volumes:
+      - ${NGINX_SITES_PATH}/:/go/src/
+    networks:
+      - backend
+    tty: true
