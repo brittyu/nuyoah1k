@@ -12,7 +12,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ${NGINX_SITES_PATH}/:/go/src/
+      - ${APP_CODE_PATH}/:/go/src/
     networks:
       - backend
     tty: true
