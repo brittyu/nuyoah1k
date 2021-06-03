@@ -1,0 +1,21 @@
+version: '3'
+
+networks:
+  backend:
+    external: true
+
+services:
+  ch:
+    build:
+      context: ./clickhouse
+      args:
+        - CLICKHOUSE_VERSION=${CLICKHOUSE_VERSION}
+    container_name: ch_clickhouse
+    ports:
+      - "${CLICKHOUSE_PORT}:9000"
+      - "${CLICKHOUSE_LINK_PORT}:8123"
+    volumes:
+      - ${DATA_PATH}/clickhouse:/var/lib/clickhosue
+      - ./clickhouse/etc:/etc/clickhouse-server
+    networks:
+      - backend

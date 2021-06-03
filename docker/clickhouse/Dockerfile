@@ -1,0 +1,2 @@
+ARG CLICKHOUSE_VERSION
+FROM yandex/clickhouse-server:${CLICKHOUSE_VERSION}
