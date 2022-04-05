@@ -140,6 +140,7 @@ services:
       - ${DATA_PATH}/redis:/data
     ports:
       - "${REDIS_PORT}:6379"
+      - "${REDIS_PORT_6378}:6378"
     networks:
       rnmp_backend:
         ipv4_address: "172.19.0.5"

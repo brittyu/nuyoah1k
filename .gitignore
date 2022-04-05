@@ -1,3 +1,5 @@
 .DS_Store
 projects/golang/
+projects/rust/
 docker/nginx/etc/sites/
+*.code-workspace
