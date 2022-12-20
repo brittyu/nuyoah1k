@@ -937,11 +937,45 @@ RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
 
+RUN docker-php-ext-configure pcntl --enable-pcntl \
+  && docker-php-ext-install pcntl
+
 # Configure locale.
 ARG LOCALE=POSIX
 ENV LC_ALL ${LOCALE}
 
-WORKDIR /var/www
+
+WORKDIR /tmp
+RUN apt-get update -yqq && \
+    apt-get install git \
+    wget -yqq
+#    git clone https://github.com/protocolbuffers/protobuf.git && \
+#    cd protobuf && \
+#    git submodule update --init --recursive && \
+#    ./autogen.sh && \
+#    ./configure && \
+#    make && \
+#    make install && \
+#    protoc --version && \
+#    pecl install protobuf && \
+#    docker-php-ext-enable protobuf && \
+#    cd .. && \
+#    rm -R protobuf && \
+#    git clone https://github.com/allegro/php-protobuf && \
+#    cd php-protobuf && \
+#    phpize && \
+#    ./configure && \
+#    make && \
+#    make install && \
+#    composer install && \
+#    mv /tmp/php-protobuf /php-protobuf
+:q
+
+
+
+
+
+WORKDIR /var/www/html
 
 CMD ["php-fpm"]
 

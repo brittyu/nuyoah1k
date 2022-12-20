@@ -103,6 +103,7 @@ services:
       - ${APP_CODE_PATH}:${APP_CODE_PATH_CONTAINER}
     extra_hosts:
       - "qingyc.test:172.19.0.6"
+      - "treasure.vip:172.19.0.6"
     networks:
       rnmp_backend:
         ipv4_address: 172.19.0.3
