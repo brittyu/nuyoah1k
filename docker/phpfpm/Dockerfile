@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # If you're in China, or you need to change sources, will be set CHANGE_SOURCE to true in .env.
 
-ARG CHANGE_SOURCE=false
+ARG CHANGE_SOURCE=true
 RUN if [ ${CHANGE_SOURCE} = true ]; then \
     # Change application source from deb.debian.org to aliyun source
     sed -i 's/deb.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list && \
@@ -266,7 +266,7 @@ ARG INSTALL_SWOOLE=false
 
 RUN if [ ${INSTALL_SWOOLE} = true ]; then \
     # Install Php Swoole Extension
-    pecl install swoole && \
+    pecl install swoole-4.8.6 && \
     docker-php-ext-enable swoole \
 ;fi
 
@@ -945,40 +945,20 @@ ARG LOCALE=POSIX
 ENV LC_ALL ${LOCALE}
 
 
-WORKDIR /tmp
-RUN apt-get update -yqq && \
-    apt-get install git \
-    wget -yqq
-#    git clone https://github.com/protocolbuffers/protobuf.git && \
-#    cd protobuf && \
-#    git submodule update --init --recursive && \
-#    ./autogen.sh && \
-#    ./configure && \
-#    make && \
-#    make install && \
-#    protoc --version && \
-#    pecl install protobuf && \
-#    docker-php-ext-enable protobuf && \
-#    cd .. && \
-#    rm -R protobuf && \
-#    git clone https://github.com/allegro/php-protobuf && \
-#    cd php-protobuf && \
-#    phpize && \
-#    ./configure && \
-#    make && \
-#    make install && \
-#    composer install && \
-#    mv /tmp/php-protobuf /php-protobuf
-:q
-
-
-
-
-
+COPY ./etc/php-protobuf-0.12.4.zip /var/www/html
 WORKDIR /var/www/html
+RUN unzip php-protobuf-0.12.4.zip && \
+   cd php-protobuf-0.12.4 && \
+   phpize && \
+   ./configure && \
+   make && \
+   make install && \
+   docker-php-ext-enable protobuf
+
 
 CMD ["php-fpm"]
 
 EXPOSE 9000
 EXPOSE 9501
 EXPOSE 21001
+EXPOSE 23001

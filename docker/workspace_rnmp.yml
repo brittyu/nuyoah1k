@@ -129,6 +129,7 @@ services:
     networks:
       rnmp_backend:
         ipv4_address: "172.19.0.4"
+    privileged: true
 
   redis:
     build:
